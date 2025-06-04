@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @import "@fontsource/great-vibes/index.css";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: var(--color-primary-50);
   --color-foreground: var(--foreground);
