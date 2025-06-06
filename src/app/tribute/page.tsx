@@ -19,6 +19,23 @@ export default function TributesPage() {
   const { data: tributes, isLoading, error } = useTributesQuery();
   const [open, setOpen] = useAtom(tributeDialogOpenAtom);
 
+  function extractImageName(url) {
+    const filename = url.split("/").pop() || "";
+    const match = filename.match(/-(.*?)\./);
+    return match ? match[1] : "";
+  }
+
+  const uniqueTributes = React.useMemo(() => {
+    const seenNames = new Set();
+    return (tributes || []).filter((tribute) => {
+      if (!tribute.image_url) return true;
+      const name = extractImageName(tribute.image_url);
+      if (seenNames.has(name)) return false;
+      seenNames.add(name);
+      return true;
+    });
+  }, [tributes]);
+
   const breakpointColumns = {
     default: 3,
     1100: 3,
@@ -79,7 +96,7 @@ export default function TributesPage() {
             className="flex w-auto gap-4 py-10"
             columnClassName="bg-clip-padding"
           >
-            {tributes.map((tribute, index) => (
+            {uniqueTributes.map((tribute, index) => (
               <div key={tribute.id} className="mb-4">
                 <TributeCard tribute={tribute} index={index} />
               </div>
