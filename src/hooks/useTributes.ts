@@ -14,7 +14,18 @@ export const useTributesQuery = () => {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data;
+      if (!data) return [];
+
+      // Deduplicate by author+message
+      const seen = new Set();
+      const deduped = data.filter((item) => {
+        const key = `${item.author}||${item.message}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
+      return deduped;
     },
   });
 };
