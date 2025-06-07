@@ -19,7 +19,7 @@ export default function TributesPage() {
   const { data: tributes, isLoading, error } = useTributesQuery();
   const [open, setOpen] = useAtom(tributeDialogOpenAtom);
 
-  function extractImageName(url) {
+  function extractImageName(url: string) {
     const filename = url.split("/").pop() || "";
     const match = filename.match(/-(.*?)\./);
     return match ? match[1] : "";
